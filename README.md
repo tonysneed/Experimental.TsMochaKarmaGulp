@@ -9,7 +9,7 @@
 	npm install gulp typescript karma-cli phantomjs -g
 	```
 
-## Steps
+## Steps Part A: Set up TypeScript with Gulp build and watch tasks
 
 1. Create a project folder with the following subdirectories:
 	```shell
