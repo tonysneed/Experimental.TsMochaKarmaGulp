@@ -14,6 +14,8 @@
 1. Create a project folder with the following subdirectories:
 	```shell
     src
+      - js
+      - ts
 	```
     
 2. Open the project folder with VS Code
@@ -30,111 +32,18 @@
 
 4. Install *local* node packages.
 	```shell
-	npm install --save-dev del gulp gulp-typescript gulp-util gulp-load-plugins gulp-task-listing
+	npm install --save-dev del merge2 event-stream gulp gulp-typescript gulp-sourcemaps gulp-util gulp-load-plugins gulp-task-listing
 	```
 	- Creates package folders inside a `node_modules` folder.
 	- Writes dev dependencies to the packages.json file.
     
-5. Create a `gulp.config.js` file and paste the following content:
-    ```js
-    module.exports = function() {
-        var src = './src/';
-        
-        var config = {
+5. Create a `gulp.config.js` file to encapsulate strings as settings.
 
-            /**
-            * File paths
-            */
-            
-            // Src root
-            src: src,
-            
-            // Build output
-            build: './build/',
-            
-            // Temp folder
-            temp: './.tmp/',
-            
-            // Report folder
-            report: './report/',
-            
-            // TypeScript files
-            ts: [
-                './*.ts',
-                src + '**/*.ts'
-            ],
-            
-            // JavaScript files
-            js: [
-                './*.js',
-                src + '**/*.js'
-            ]
-        }
-        
-        return config;
-    };
-    ```
+6. Create a `gulpfile.js` file to define gulp tasks.
+  - Include a `ts-compile` task for transpiling TypeScript to JavaScript.
+  - Optionally generate source maps and type definitions.
 
-6. Create a `gulpfile.js` file at the project root.
-	- Copy the following code into the file:
-    
-	```js
-    var config = require('./gulp.config')();
-    var gulp = require('gulp');
-    var $ = require('gulp-load-plugins')({ lazy: true });
-    var del = require('del');
-
-    gulp.task('help', $.taskListing);
-    gulp.task('default', ['help']);
-
-    // Compile TypeScript
-    gulp.task('ts-compile', function(){
-        log('Compiling TypeScript')
-        return gulp.src(config.ts)
-            .pipe($.typescript())
-            .pipe(gulp.dest(config.build));
-    });
-
-    // Watch and compile TypeScript
-    gulp.task('ts-watch', function () {
-        return gulp.watch(config.ts, ['ts-compile']);
-    });
-
-    // Remove all files from the build, temp, and reports folders
-    // done: callback when complete
-    gulp.task('clean', function(done) {
-        var delconfig = [].concat(config.build, config.temp, config.report);
-        log('Cleaning: ' + $.util.colors.blue(delconfig));
-        del(delconfig, done);
-    });
-
-    ////////////////
-
-    // Log a message or series of messages using chalk's blue color.
-    // Can pass in a string, object or array.
-    function log(msg) {
-        if (typeof(msg) === 'object') {
-            for (var item in msg) {
-                if (msg.hasOwnProperty(item)) {
-                    $.util.log($.util.colors.blue(msg[item]));
-                }
-            }
-        } else {
-            $.util.log($.util.colors.blue(msg));
-        }
-    }
-
-    // Delete all files in a given path
-    function clean(path, done) {
-        log('Cleaning: ' + $.util.colors.blue(path));
-        del(path, done);
-    }
-	```
-
-	- The `ts-compile` task transpiles .ts files into .js files
-	- The `ts-watch` task monitors .ts files and executes `ts-compile` task when a change is detected.
-
-5. Configure the Task Runner in VS Code.
+7. Configure the Task Runner in VS Code.
 	- Press **Cmd-Shft-P**, then type *'Config'* and click *'Configure Task Runner'*
 	- Once the `tasks.json` file is created, replace the content with the following:
 	
@@ -157,7 +66,7 @@
 	}
 	```	
     
-6. Add an `greeter.ts` file to the `src` folder.
+8. Add an `greeter.ts` file to the `src` folder.
 	- Add the following content to the file:
 	```typescript
     class Greeter {

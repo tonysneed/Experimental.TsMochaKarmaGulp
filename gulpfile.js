@@ -1,7 +1,9 @@
 var config = require('./gulp.config')();
+var del = require('del');
+var merge = require('merge2');
+var stream = require('event-stream');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({ lazy: true });
-var del = require('del');
 
 /**
  * List the available gulp tasks
@@ -12,28 +14,47 @@ gulp.task('default', ['help']);
 /**
  * Compile TypeScript
  */
-gulp.task('ts-compile', function(){
+gulp.task('ts-compile', ['ts-clean'], function() {
+    
     log('Compiling TypeScript')
-    return gulp.src(config.ts)
-        .pipe($.typescript())
-        .pipe(gulp.dest(config.build));
+    
+    var tsResult = gulp.src(config.ts.files)
+        .pipe($.sourcemaps.init())
+        .pipe($.typescript({
+			noImplicitAny: true,
+            declaration: true
+		}));
+
+    return stream.merge(
+        tsResult.dts.pipe(gulp.dest(config.ts.typings)),
+        tsResult.js
+            .pipe($.sourcemaps.write('.'))
+            .pipe(gulp.dest(config.ts.out)));
 });
 
 /**
  * Watch and compile TypeScript
  */
 gulp.task('ts-watch', function () {
-    return gulp.watch(config.ts, ['ts-compile']);
+    return gulp.watch(config.ts.files, ['ts-compile']);
 });
 
 /**
  * Remove all files from the build, temp, and reports folders
  * @param  {Function} done - callback when complete
  */
-gulp.task('clean', function(done) {
+gulp.task('clean', ['ts-clean'], function() {
     var delconfig = [].concat(config.build, config.temp, config.report);
-    log('Cleaning: ' + $.util.colors.blue(delconfig));
-    del(delconfig, done);
+    return clean(delconfig);
+});
+
+/**
+ * Remove all files from the build, temp, and reports folders
+ * @param  {Function} done - callback when complete
+ */
+gulp.task('ts-clean', function() {
+    var delconfig = [].concat(config.ts.outFiles);
+    return clean(delconfig);
 });
 
 ////////////////
@@ -59,7 +80,7 @@ function log(msg) {
  * @param  {Array}   path - array of paths to delete
  * @param  {Function} done - callback when complete
  */
-function clean(path, done) {
+function clean(path) {
     log('Cleaning: ' + $.util.colors.blue(path));
-    del(path, done);
+    return del(path);
 }

@@ -1,13 +1,14 @@
 module.exports = function() {
+    
+    // Local variables
     var src = './src/';
+    var tsSrc = src + 'ts/';
+    var jsSrc = src + 'js/';
+    var typings = './tools/typings/';
     
     var config = {
 
-        /**
-         * File paths
-         */
-        
-        // Src root
+        // Source folders
         src: src,
         
         // Build output
@@ -19,17 +20,29 @@ module.exports = function() {
         // Report folder
         report: './report/',
         
-        // TypeScript files
-        ts: [
-            './*.ts',
-            src + '**/*.ts'
-        ],
-        
-        // JavaScript files
-        js: [
-            './*.js',
-            src + '**/*.js'
-        ]
+        // TypeScript Settings
+        ts: {
+            
+            // Folders
+            src: tsSrc,
+            out: jsSrc,
+            
+            // Source files
+            files: [
+                tsSrc + '**/*.ts'
+            ],
+            
+            // Type definitions
+            typings: typings,
+            
+            // Compiled files
+            outFiles: [
+                jsSrc + '**/*.js',
+                jsSrc + '**/*.js.map',
+                '!' + jsSrc + '**/*.spec.js',
+                typings + '**/*.d.ts'
+            ]
+        }
     }
     
     return config;
