@@ -9,7 +9,8 @@
         {
             "taskName": "ts-compile",
             "isBuildCommand": true,
-            "showOutput": "silent"
+            "showOutput": "silent",
+            "problemMatcher": "$gulp-tsc"
         }
     ]
 }
