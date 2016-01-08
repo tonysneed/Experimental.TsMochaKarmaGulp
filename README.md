@@ -1,4 +1,4 @@
-# Setting Up a TypeScript Project with Karma, Mocha, and Gulp
+# Setting Up a TypeScript Project with Jamsine, Karma and Gulp
 
 ## Prerequisites
 
