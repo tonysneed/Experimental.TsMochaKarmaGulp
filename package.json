@@ -1,0 +1,31 @@
+{
+  "name": "Experimental.TsMochaKarmaGulp",
+  "version": "1.0.0",
+  "description": "Set Up a TypeScript Project with Karma, Mocha, and Gulp",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonysneed/Experimental.TsMochaKarmaGulp.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tonysneed/Experimental.TsMochaKarmaGulp/issues"
+  },
+  "homepage": "https://github.com/tonysneed/Experimental.TsMochaKarmaGulp#readme",
+  "devDependencies": {
+    "del": "^2.2.0",
+    "event-stream": "^3.3.2",
+    "gulp": "^3.9.0",
+    "gulp-load-plugins": "^1.1.0",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-task-listing": "^1.0.1",
+    "gulp-typescript": "^2.10.0",
+    "gulp-util": "^3.0.7",
+    "merge2": "^0.3.6"
+  }
+}
