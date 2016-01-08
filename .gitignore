@@ -3,6 +3,7 @@
 build
 dist
 packages
+typings
 .tmp
 
 # System folders

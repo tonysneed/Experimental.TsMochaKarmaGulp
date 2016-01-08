@@ -5,8 +5,13 @@ module.exports = function() {
     var tsSrc = src + 'ts/';
     var jsSrc = src + 'js/';
     var typings = './tools/typings/';
+    var report = './report/';
+    var specRunnerFile = 'SpecRunner.html';
     
     var config = {
+
+        // Root folder
+        root: './',
 
         // Source folders
         src: src,
@@ -18,9 +23,28 @@ module.exports = function() {
         temp: './.tmp/',
         
         // Report folder
-        report: './report/',
+        report: report,
         
-        // TypeScript Settings
+        // Spec runner html file
+        specRunner: specRunnerFile,
+        
+        // JavaScript settings
+        js: {
+            src: [
+                jsSrc + '**/*.js',
+                '!' + jsSrc + '**/*.js.map',
+                '!' + jsSrc + '**/*.spec.js',
+            ],
+            order: [
+                '**/*.module.js',
+                '**/*.js'
+            ],
+            specs: [
+                jsSrc + '**/*.spec.js'
+            ]
+        },
+        
+        // TypeScript settings
         ts: {
             
             // Folders
@@ -45,5 +69,30 @@ module.exports = function() {
         }
     }
     
+    // Karma settings
+    config.karma = getKarmaOptions();
+    
     return config;
+    
+    ////////////////
+    
+    function getKarmaOptions() {
+        var options = {
+            files: [].concat(
+                jsSrc + '*.js'
+            ),
+            exclude: [],
+            coverage: {
+                dir: report + 'coverage',
+                reporters: [
+                    {type: 'html', subdir: 'report-html'},
+                    {type: 'lcov', subdir: 'report-lcov'},
+                    {type: 'text-summary'}
+                ]
+            },
+            preprocessors: []
+        };
+        options.preprocessors[jsSrc + '**/!(*.spec)+(.js)'] = ['coverage'];
+        return options;
+    }
 };
