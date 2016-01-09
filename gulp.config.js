@@ -51,7 +51,12 @@ module.exports = function() {
             specs: [
                 jsSrc + jsSpecFiles
             ],
-            maps: jsSrc + jsMapFiles
+            maps: jsSrc + jsMapFiles,
+            srcSpecs: [
+                jsSrc + jsSrcFiles,
+                '!' + jsSrc + jsMapFiles,
+                jsSrc + jsSpecFiles
+            ]
         },
         
         // TypeScript settings
@@ -80,7 +85,11 @@ module.exports = function() {
 
         // Node settings
         nodeServer: root + 'server.js',
-        defaultPort: '7203'
+        defaultPort: '7203',
+        
+        // Browser sync
+        browserReloadPort: 3000,
+        browserReloadDelay: 1000
     }
     
     // Karma settings

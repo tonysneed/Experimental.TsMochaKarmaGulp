@@ -539,4 +539,94 @@
     });
     ```
     
-  - Test
+14. Use `browser-sync` to refresh tests in browser on file changes.
+
+  - Add `browser-sync` package and typings.
+  
+    ```shell
+    npm install browser-sync --save-dev
+    tsd install browser-sync
+    typings install browser-sync --ambient --save-dev
+    typings install browser-sync --ambient --save-dev
+    ```
+    
+  - Add config properties for `browser-sync`.
+  
+    ```js
+    js: {
+        srcSpecs: [
+            jsSrc + jsSrcFiles,
+            '!' + jsSrc + jsMapFiles,
+            jsSrc + jsSpecFiles
+        ]
+    browserReloadPort: 3000,
+    browserReloadDelay: 1000
+    ```  
+    
+  - Add a require for `browser-sync` to `gulpfile`.
+        + Initialize a `port` variable defaulting to config.defaultPort
+        + Add `startBrowserSync` method.
+        
+    ```js
+    var browserSync = require('browser-sync');
+    var port = process.env.PORT || config.defaultPort;
+    ```
+    
+    ```js
+    function startBrowserSync() {
+        if (args.nosync || browserSync.active) {
+            return;
+        }
+
+        log('Starting BrowserSync on port ' + port);
+
+        var options = {
+            proxy: 'localhost:' + port,
+            port: config.browserReloadPort,
+            files: config.js.srcSpecs,
+            ghostMode: {
+                clicks: true,
+                location: false,
+                forms: true,
+                scroll: true
+            },
+            injectChanges: true,
+            logFileChanges: true,
+            logLevel: 'debug',
+            logPrefix: 'ts-gulp-karma',
+            notify: true,
+            reloadDelay: config.browserReloadDelay,
+            startPath: config.specRunnerFile
+        } ;
+
+        browserSync(options);
+    }
+    ```
+    
+  - Update `serve` method to call `startBrowserSync` on start.
+        + Call `browserSync.notify` and `browserSync.reload` on restart
+          using a `setTimeout` method.
+        + Test by running `gulp serve-specs` and changing files: `.ts`, `.js`, `.spec.js`.
+        + The browser will launch with tests, then reload on changes.
+        + You can connect more than once browser at the same time, 
+          which stay in sync and repond to user input.
+        + Add `--nosync` to task command to not use `browser-sync`.
+          
+    ```js
+    return $.nodemon(nodeOptions)
+        .on('restart', function(ev) {
+            log('*** nodemon restarted');
+            if (ev) {
+                log('files changed:\n' + ev);
+            }
+            setTimeout(function() {
+                browserSync.notify('reloading now ...');
+                browserSync.reload({stream: false});
+            }, config.browserReloadDelay);
+        })
+        .on('start', function () {
+            log('*** nodemon started');
+            startBrowserSync();
+        })
+    ```
+

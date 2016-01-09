@@ -3,8 +3,10 @@ var del = require('del');
 var merge = require('merge2');
 var stream = require('event-stream');
 var args = require('yargs').argv;
+var browserSync = require('browser-sync');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({ lazy: true });
+var port = process.env.PORT || config.defaultPort;
 
 /**
  * yargs variables can be passed in to alter the behavior, when present.
@@ -212,9 +214,14 @@ function serve() {
             if (ev) {
                 log('files changed:\n' + ev);
             }
+            setTimeout(function() {
+                browserSync.notify('reloading now ...');
+                browserSync.reload({stream: false});
+            }, config.browserReloadDelay);
         })
         .on('start', function () {
             log('*** nodemon started');
+            startBrowserSync();
         })
         .on('crash', function () {
             log('*** nodemon crashed: script crashed for some reason');
@@ -243,4 +250,37 @@ function runNodeInspector() {
     
     var exec = require('child_process').exec;
     exec('node-inspector');
+}
+
+/**
+ * Start BrowserSync
+ * --nosync will avoid browserSync
+ */
+function startBrowserSync() {
+    if (args.nosync || browserSync.active) {
+        return;
+    }
+
+    log('Starting BrowserSync on port ' + port);
+
+    var options = {
+        proxy: 'localhost:' + port,
+        port: config.browserReloadPort,
+        files: config.js.srcSpecs,
+        ghostMode: {
+            clicks: true,
+            location: false,
+            forms: true,
+            scroll: true
+        },
+        injectChanges: true,
+        logFileChanges: true,
+        logLevel: 'debug',
+        logPrefix: 'ts-gulp-karma',
+        notify: true,
+        reloadDelay: config.browserReloadDelay,
+        startPath: config.specRunnerFile
+    } ;
+
+    browserSync(options);
 }

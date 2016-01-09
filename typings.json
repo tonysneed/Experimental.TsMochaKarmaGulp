@@ -1,5 +1,7 @@
 {
   "ambientDevDependencies": {
+    "browser-sync": "github:DefinitelyTyped/DefinitelyTyped/browser-sync/browser-sync.d.ts#a64af03846ab33df431b149665cf6e4b45dbafd0",
+    "chokidar": "github:DefinitelyTyped/DefinitelyTyped/chokidar/chokidar.d.ts#ae81e340a9e897167cfef3122a5a3aed04293814",
     "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#3b6d42912788a3b5b47edf271f551b80966fd9e6",
     "gulp-nodemon": "github:DefinitelyTyped/DefinitelyTyped/gulp-nodemon/gulp-nodemon.d.ts#fb32dabdd65522cdc481242844ba8cfaec66dbdf",
     "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#8cf8164641be73e8f1e652c2a5b967c7210b6729",
