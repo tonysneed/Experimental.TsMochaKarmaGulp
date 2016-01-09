@@ -1,9 +1,16 @@
 module.exports = function() {
     
     // Local variables
+    var root = './';
     var src = './src/';
     var tsSrc = src + 'ts/';
     var jsSrc = src + 'js/';
+    var jsSrcFiles = '**/*.js';
+    var jsModuleFiles = '**/*.module.js';
+    var jsMapFiles = '**/*.js.map';
+    var jsSpecFiles = '**/*.spec.js';
+    var tsSrcFiles = '**/*.ts';
+    var tsDefFiles = '**/*.d.ts';
     var typings = './tools/typings/';
     var report = './report/';
     var specRunnerFile = 'SpecRunner.html';
@@ -11,8 +18,8 @@ module.exports = function() {
     var config = {
 
         // Root folder
-        root: './',
-
+        root: root,
+        
         // Source folders
         src: src,
         
@@ -26,22 +33,25 @@ module.exports = function() {
         report: report,
         
         // Spec runner html file
-        specRunner: specRunnerFile,
+        specRunner: root + specRunnerFile,
+        specRunnerFile: specRunnerFile,
         
         // JavaScript settings
         js: {
+            dir: jsSrc,
             src: [
-                jsSrc + '**/*.js',
-                '!' + jsSrc + '**/*.js.map',
-                '!' + jsSrc + '**/*.spec.js',
+                jsSrc + jsSrcFiles,
+                '!' + jsSrc + jsMapFiles,
+                '!' + jsSrc + jsSpecFiles
             ],
             order: [
-                '**/*.module.js',
-                '**/*.js'
+                jsModuleFiles,
+                jsSrcFiles
             ],
             specs: [
-                jsSrc + '**/*.spec.js'
-            ]
+                jsSrc + jsSpecFiles
+            ],
+            maps: jsSrc + jsMapFiles
         },
         
         // TypeScript settings
@@ -53,7 +63,7 @@ module.exports = function() {
             
             // Source files
             files: [
-                tsSrc + '**/*.ts'
+                tsSrc + tsSrcFiles
             ],
             
             // Type definitions
@@ -61,12 +71,16 @@ module.exports = function() {
             
             // Compiled files
             outFiles: [
-                jsSrc + '**/*.js',
-                jsSrc + '**/*.js.map',
-                '!' + jsSrc + '**/*.spec.js',
-                typings + '**/*.d.ts'
+                jsSrc + jsSrcFiles,
+                jsSrc + jsMapFiles,
+                '!' + jsSrc + jsSpecFiles,
+                typings + tsDefFiles
             ]
-        }
+        },
+
+        // Node settings
+        nodeServer: root + 'server.js',
+        defaultPort: '7203'
     }
     
     // Karma settings

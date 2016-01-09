@@ -1,8 +1,12 @@
 {
   "ambientDevDependencies": {
-    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#8cf8164641be73e8f1e652c2a5b967c7210b6729"
+    "express": "github:DefinitelyTyped/DefinitelyTyped/express/express.d.ts#3b6d42912788a3b5b47edf271f551b80966fd9e6",
+    "gulp-nodemon": "github:DefinitelyTyped/DefinitelyTyped/gulp-nodemon/gulp-nodemon.d.ts#fb32dabdd65522cdc481242844ba8cfaec66dbdf",
+    "node": "github:DefinitelyTyped/DefinitelyTyped/node/node.d.ts#8cf8164641be73e8f1e652c2a5b967c7210b6729",
+    "serve-static": "github:DefinitelyTyped/DefinitelyTyped/serve-static/serve-static.d.ts#0fa4e9e61385646ea6a4cba2aef357353d2ce77f"
   },
   "devDependencies": {
-    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d2dd0dbfc70f5bd50aab635156620b3a2578a48d"
+    "jasmine": "github:DefinitelyTyped/DefinitelyTyped/jasmine/jasmine.d.ts#d2dd0dbfc70f5bd50aab635156620b3a2578a48d",
+    "yargs": "github:typings/typed-yargs#0ceaff08a778b580fd4772b04bfb59fbf836dd8e"
   }
 }

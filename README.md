@@ -5,13 +5,15 @@
 1. Install [Node.js](https://nodejs.org/en)
 	
 2. Install *global* node packages.
-	```
-	npm install gulp typescript karma-cli phantomjs -g
-	```
+
+    ```
+    npm install gulp typescript karma-cli phantomjs -g
+    ```
 
 ## Part A: Set up TypeScript with Gulp build and watch tasks
 
 1. Create a project folder with the following subdirectories:
+
 	```shell
     src
       - js
@@ -20,17 +22,20 @@
     
 2. Open the project folder with VS Code
 	- `cd` into the folder from Terminal and execute:
+    
 	```shell
 	code .
 	```
 	
 3. Initialize the `package.json` file.
+
 	```shell
 	npm init -y
 	```
 	- The `-y` flag will create `package.json` with defaults
 
 4. Install *local* node packages.
+
 	```shell
 	npm install --save-dev del merge2 event-stream gulp gulp-typescript gulp-sourcemaps gulp-util gulp-load-plugins gulp-task-listing
 	```
@@ -68,6 +73,7 @@
     
 8. Add an `greeter.ts` file to the `src` folder.
 	- Add the following content to the file:
+    
 	```typescript
     class Greeter {
         greeting: string;
@@ -92,11 +98,11 @@
     
 ## Part B: Add Gulp tasks for running tests with Karma and Jasmine
 
-10. Add a `greeter.spec.js` filt to the `src/js` folder.
+1. Add a `greeter.spec.js` filt to the `src/js` folder.
 
   - Place the following test there:
   
-  ```js`
+  ```js
     describe('App.Greeter', function() {
         
         describe('greet', function(){   
@@ -117,50 +123,50 @@
 
   ```
   
-11. Install `typings` globally.
+2. Install `tsd` and `typings` globally.
 
   - Allows installation of type definition files to enable intellisense in vscode.
-  - `typings` offers more features than `tsd`, including `uninstall`
+  - `typings` offers more features than `tsd`, including `uninstall`.
 
     ```shell
+    npm install tsd -g
     npm install typings -g
-    ```
+        ```
 
-12. Install the type definitions to provide intellisense.
+3. Install the type definitions to provide intellisense.
 
   - Execute the following command from the terminal:
   
     ```shell
+    tsd install node jasmine
     typings install node --ambient --save-dev
     typings install jasmine --save-dev
     ```
 
-  - If a typing is not installed, you can also highlight an unknown function, then press Cmd+. to install it.     
+  - If a typing is not installed, you can highlight an unknown function, then press Cmd+. to install it.     
   - You can also install `tds` globally and use it.
   
-13. Download the latest standalone zip file for Jasmine.
+4. Download the latest standalone zip file for Jasmine.
 
   - https://github.com/jasmine/jasmine/releases/latest
   - Unzip contents and copy the `lib` folder and `SpecRunner.html` file to project.
-  - Update the script links to the source and spec files.
+  - Place the `lib` folder in a `tools/testing` folder, and place
+    `SpecRunner.html` in the project root.
+  - Update the script links in `SpecRunner.html` and test by opening it from the Finder.
   
-14. Reveal `SpecRunner.html` in the Finder, then double-click to open in a browser.
-
-  - You should see the test results displayed.
-  
-15. Install `karma-cli` globally.
+5. Install `karma-cli` globally.
 
     ```shell
     npm install karma-cli -g
     ```
 
-16. Install `karma` with plugins locally.
+6. Install `karma` with plugins locally.
 
     ```shell
     npm install --save-dev karma phantomjs karma-jasmine karma-phantomjs-launcher
     ```
     
-17. Configure `karma`
+7. Configure `karma`
 
     ```shell
     karma init
@@ -172,7 +178,7 @@
         + `src/js/*.js` for input files
         + `yes` for watch files for changes    
  
-18. Start `karma` from the terminal.
+8. Start `karma` from the terminal.
 
     ```shell
     karma start
@@ -184,7 +190,7 @@
   - Change the test back so that it passes.
   - To conduct a single test run with `karma`, append `--singleRun` to `karma start`.
   
-19. Update `gulp.config.js` to include karma settings.
+9. Update `gulp.config.js` to include karma settings.
 
     ```js
     // Karma settings
@@ -219,7 +225,7 @@
     exclude: gulpConfig.karma.exclude,
         ```
         
-20. Add tasks to `gulpfile.js` to run `karma` tests.
+10. Add tasks to `gulpfile.js` to run `karma` tests.
 
     ```js
     gulp.task('test', function() {
@@ -258,7 +264,7 @@
     - Run the gulp `test` task to verify that `karma` tests are running.
     - Run the gulp `test-watch` task to verify that `karma` watcher is running.
     
-21. Add options to `gulp.config` for `karma` code coverage and reporting.
+11. Add options to `gulp.config` for `karma` code coverage and reporting.
 
   - Add `report` variable for report directory, then set config property.
   
@@ -303,34 +309,44 @@
   - Then run `gulp test` from the terminal.
     You should see a nice `Coverage summary` output to the terminal.
     
-22. Use `gulp` to automate inclusion of tests in `SpecRunner.html`.
+12. Use `gulp` to automate inclusion of tests in `SpecRunner.html`.
 
-  - Add `specRunner` and `specRunnerFile` to `gulp.config`.
+  - Add `root`, `js`, `specRunner`, `specRunnerFile` to `gulp.config`.
   
     ```js
-    var specRunnerFile = 'specs.html';
-    specRunner: specRunnerFile
+    var root = './';
+    var src = './src/';
+    var jsSrc = src + 'js/';
+    var jsSrcFiles = '**/*.js';
+    var jsModuleFiles = '**/*.module.js';
+    var jsMapFiles = '**/*.js.map';
+    var jsSpecFiles = '**/*.spec.js';
+    var specRunnerFile = 'SpecRunner.html';
     ```
     
-  - Add `root` and `js` settings to `gulp.config`.
+  - Add `js` settings to `gulp.config`.
         + `src` property returns only `.js` source files
         + `specs` property returns only `.spec.js` files
   
     ```js
-    root: './',
+    root: root,
+    specRunner: root + specRunnerFile,
+    specRunnerFile: specRunnerFile,
     js: {
-        src: [
-            jsSrc + '**/*.js',
-            '!' + jsSrc + '**/*.js.map',
-            '!' + jsSrc + '**/*.spec.js',
-        ],
-        order: [
-            '**/*.module.js',
-            '**/*.js'
-        ],
-        specs: [
-            jsSrc + '**/*.spec.js'
-        ]
+        js: {
+            src: [
+                jsSrc + jsSrcFiles,
+                '!' + jsSrc + jsMapFiles,
+                '!' + jsSrc + jsSpecFiles
+            ],
+            order: [
+                jsModuleFiles,
+                jsSrcFiles
+            ],
+            specs: [
+                jsSrc + jsSpecFiles
+            ],
+        },
     },
 
     ```
@@ -345,6 +361,16 @@
     ```
         
     ```js
+    gulp.task('inject-specs', function() {
+        log('injecting scripts into the spec runner');
+
+        return gulp
+            .src(config.specRunner)
+            .pipe(inject(config.js.src, '', config.js.order))
+            .pipe(inject(config.js.specs, 'specs', ['**/*']))
+            .pipe(gulp.dest(config.root));
+    });
+
     function orderSrc (src, order) {
         return gulp
             .src(src)
@@ -359,7 +385,7 @@
 
         return $.inject(orderSrc(src, order), options);
     }
-    ```    
+    ```
   
   - Replace source and spec script sections in `SpecRunner.html`
     with inject labeled comments.
@@ -375,3 +401,142 @@
     <!-- endinject -->
     ```
     
+13. Use `express` to serve the spec runner.
+
+  - Add `express` as a dev devependency.
+  
+    ```shell
+    npm install express --save-dev
+    ```
+    
+  - Add type defs for `express` and `serve-static`.
+  
+    ```shell
+    tsd install express
+    typings install express --ambient --savedev
+    typings install serve-static --ambient --savedev
+    ```
+
+  - Add node settings to `gulp/config`.
+  
+    ```js
+    nodeServer: root + 'server.js',
+    defaultPort: '7203'
+    ```
+    
+    - Add a `server.js` file to the root folder with code to start an express server.
+        + Specify `config.specRunnerFile` for the `index` option.
+        + Test the server by entering `node server.js` in the terminal.
+        + Then open a browser to: `http://localhost:7203/` to see the spec runner.
+  
+    ```js
+    'use strict';
+
+    var express = require('express');
+    var app = express();
+    var config = require('./gulp.config')();
+    var port = process.env.PORT || config.defaultPort;
+
+    console.log('Starting express server ...');
+
+    app.use('/', express.static(config.root, { index: config.specRunnerFile }));
+
+    var server = app.listen(port, function() {
+        console.log('Express server listening on port %s', port);
+    });
+    ```
+
+  - Add dependencies for `yargs`, `gulp-nodemon`.
+        + Add require at the top of `guplfile`.
+  
+    ```shell
+    npm install yargs --save-dev
+    npm install gulp-nodemon --save-dev
+    
+    tsd install yargs gulp-nodemon
+    typings install yargs gulp-nodemon --save-dev
+    ```
+
+    ```js
+    var args = require('yargs').argv;
+    ```
+    
+  - Add config for js source directory that nodemon will watch.
+  
+    ```js
+    js: {
+        dir: jsSrc,
+    ```
+    
+  - Add a `serve` function which uses `gulp-nodemon` to start the node server.
+        + Configure `nodemon` to restart when changes in `src/js` have occurred.
+        + Set a minimum delay of 2000 ms to avoid redundant restarts.
+        + Include options to attach a debugger to the node server.
+        
+    ```js
+    function serve() {
+        var debug = args.debug || args.debugBrk;
+        var debugMode = args.debug ? '--debug' : args.debugBrk ? '--debug-brk' : '';
+        var nodeOptions = getNodeOptions();
+
+        if (debug) {
+            runNodeInspector();
+            nodeOptions.nodeArgs = [debugMode + '=5858'];
+        }
+
+        if (args.verbose) {
+            nodeOptions.verbose = true;
+            console.log(nodeOptions);
+        }
+
+        return $.nodemon(nodeOptions)
+            .on('restart', function(ev) {
+                log('*** nodemon restarted');
+                if (ev) {
+                    log('files changed:\n' + ev);
+                }
+            })
+            .on('start', function () {
+                log('*** nodemon started');
+            })
+            .on('crash', function () {
+                log('*** nodemon crashed: script crashed for some reason');
+            })
+            .on('exit', function () {
+                log('*** nodemon exited cleanly');
+            });
+    }
+
+    function getNodeOptions() {
+        
+        return {
+            script: config.nodeServer,
+            delay: 2000, // Setting too low causes multiple restarts on file changes
+            env: {
+                'PORT': config.defaultPort
+            },
+            watch: config.js.dir
+        };
+    }
+
+    function runNodeInspector() {
+
+        log('Running node-inspector.');
+        log('Browse to http://localhost:8080/debug?port=5858');
+        
+        var exec = require('child_process').exec;
+        exec('node-inspector');
+    }```
+
+  - Add a `serve-specs` task which depends on `ts-watch` and `inject-specs`.
+        + Run the `serve-specs` task, then change some watched files. 
+          The node server should restart as excpected.
+  
+    ```js
+    gulp.task('serve-specs', ['inject-specs', 'ts-watch'], function() {
+        log('run the spec runner');
+        serve();
+    });
+    ```
+    
+  - Test

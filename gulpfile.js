@@ -2,8 +2,18 @@ var config = require('./gulp.config')();
 var del = require('del');
 var merge = require('merge2');
 var stream = require('event-stream');
+var args = require('yargs').argv;
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({ lazy: true });
+
+/**
+ * yargs variables can be passed in to alter the behavior, when present.
+ * Example: gulp serve-specs
+ *
+ * --verbose  : Various tasks will produce more output to the console.
+ * --debug    : Launch debugger with node-inspector.
+ * --debug-brk: Launch debugger and break on 1st line with node-inspector.
+ */
 
 /**
  * List the available gulp tasks
@@ -80,9 +90,8 @@ gulp.task('test-watch', function() {
  * @return {Stream}
  */
 gulp.task('inject-specs', function() {
-    log('building the spec runner');
+    log('injecting scripts into the spec runner');
 
-    //var specs = config.specs;
     return gulp
         .src(config.specRunner)
         .pipe(inject(config.js.src, '', config.js.order))
@@ -90,6 +99,14 @@ gulp.task('inject-specs', function() {
         .pipe(gulp.dest(config.root));
 });
 
+/**
+ * Run the spec runner
+ * @return {Stream}
+ */
+gulp.task('serve-specs', ['inject-specs', 'ts-watch'], function() {
+    log('run the spec runner');
+    serve();
+});
 
 ////////////////
 
@@ -162,10 +179,68 @@ function orderSrc (src, order) {
  * @returns {Stream}   The stream
  */
 function inject(src, label, order) {
-    var options = {read: false};
+    var options = {read: false, addRootSlash: false};
     if (label) {
         options.name = 'inject:' + label;
     }
-
     return $.inject(orderSrc(src, order), options);
+}
+
+/**
+ * start the express server
+ * --debug-brk or --debug
+ * --verbose  to log options
+ */
+function serve() {
+    var debug = args.debug || args.debugBrk;
+    var debugMode = args.debug ? '--debug' : args.debugBrk ? '--debug-brk' : '';
+    var nodeOptions = getNodeOptions();
+
+    if (debug) {
+        runNodeInspector();
+        nodeOptions.nodeArgs = [debugMode + '=5858'];
+    }
+
+    if (args.verbose) {
+        nodeOptions.verbose = true;
+        console.log(nodeOptions);
+    }
+
+    return $.nodemon(nodeOptions)
+        .on('restart', function(ev) {
+            log('*** nodemon restarted');
+            if (ev) {
+                log('files changed:\n' + ev);
+            }
+        })
+        .on('start', function () {
+            log('*** nodemon started');
+        })
+        .on('crash', function () {
+            log('*** nodemon crashed: script crashed for some reason');
+        })
+        .on('exit', function () {
+            log('*** nodemon exited cleanly');
+        });
+}
+
+function getNodeOptions() {
+    
+    return {
+        script: config.nodeServer,
+        delay: 2000, // Setting too low causes multiple restarts on file changes
+        env: {
+            'PORT': config.defaultPort
+        },
+        watch: config.js.dir
+    };
+}
+
+function runNodeInspector() {
+
+    log('Running node-inspector.');
+    log('Browse to http://localhost:8080/debug?port=5858');
+    
+    var exec = require('child_process').exec;
+    exec('node-inspector');
 }
