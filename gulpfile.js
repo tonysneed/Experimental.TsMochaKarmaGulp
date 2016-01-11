@@ -10,7 +10,7 @@ var port = process.env.PORT || config.defaultPort;
 
 /**
  * yargs variables can be passed in to alter the behavior, when present.
- * Example: gulp serve-specs
+ * Example: gulp tests-serve
  *
  * --verbose  : Various tasks will produce more output to the console.
  * --debug    : Launch debugger with node-inspector.
@@ -20,13 +20,13 @@ var port = process.env.PORT || config.defaultPort;
 /**
  * List the available gulp tasks
  */
-gulp.task('help', $.taskListing);
+gulp.task('help', $.taskListing.withFilters(/:/));
 gulp.task('default', ['help']);
 
 /**
  * Compile TypeScript
  */
-gulp.task('ts-compile', ['ts-clean'], function() {
+gulp.task('typescript-compile', ['typescript-clean'], function() {
     
     log('Compiling TypeScript')
     
@@ -47,43 +47,31 @@ gulp.task('ts-compile', ['ts-clean'], function() {
 /**
  * Watch and compile TypeScript
  */
-gulp.task('ts-watch', function () {
-    return gulp.watch(config.ts.files, ['ts-compile']);
+gulp.task('typescript-watch', function () {
+    return gulp.watch(config.ts.files, ['typescript-compile']);
 });
 
 /**
  * Remove all files from the build, temp, and reports folders
  */
-gulp.task('clean', ['ts-clean'], function() {
-    var delconfig = [].concat(config.build, config.temp, config.report);
-    return clean(delconfig);
-});
-
-/**
- * Remove all files from the build, temp, and reports folders
- */
-gulp.task('ts-clean', function() {
+gulp.task('typescript-clean', function() {
     var delconfig = [].concat(config.ts.outFiles);
     return clean(delconfig);
 });
 
 /**
  * Run specs once and exit
- * To start servers and run midway specs as well:
- *    gulp test --startServers
  * @return {Stream}
  */
-gulp.task('test', function() {
+gulp.task('tests-run', function() {
     startTests(true /*singleRun*/ );
 });
 
 /**
  * Run specs and wait.
  * Watch for file changes and re-run tests on each change
- * To start servers and run midway specs as well:
- *    gulp autotest --startServers
  */
-gulp.task('test-watch', function() {
+gulp.task('tests-watch', function() {
     startTests(false /*singleRun*/ );
 });
 
@@ -91,7 +79,7 @@ gulp.task('test-watch', function() {
  * Inject all the spec files into the SpecRunner.html
  * @return {Stream}
  */
-gulp.task('inject-specs', function() {
+gulp.task('specs:inject', function() {
     log('injecting scripts into the spec runner');
 
     return gulp
@@ -105,7 +93,7 @@ gulp.task('inject-specs', function() {
  * Run the spec runner
  * @return {Stream}
  */
-gulp.task('serve-specs', ['inject-specs', 'ts-watch'], function() {
+gulp.task('tests-serve', ['specs:inject', 'typescript-watch'], function() {
     log('run the spec runner');
     serve();
 });
