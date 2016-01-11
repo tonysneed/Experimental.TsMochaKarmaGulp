@@ -1,8 +1,8 @@
-describe('App.Greeter', function() {
+describe('App.Greeter', function () {
 
-    describe('greet', function(){
+    describe('greet', function () {
 
-        it('returns hello world', function(){
+        it('returns hello world', function () {
 
             // Arrange
             var greeter = new App.Greeter('World');

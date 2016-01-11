@@ -26,16 +26,16 @@ gulp.task('default', ['help']);
 /**
  * Compile TypeScript
  */
-gulp.task('typescript-compile', ['typescript-clean'], function() {
-    
+gulp.task('typescript-compile', ['typescript-clean'], function () {
+
     log('Compiling TypeScript')
-    
+
     var tsResult = gulp.src(config.ts.files)
         .pipe($.sourcemaps.init())
         .pipe($.typescript({
-			noImplicitAny: true,
+            noImplicitAny: true,
             declaration: true
-		}));
+        }));
 
     return stream.merge(
         tsResult.dts.pipe(gulp.dest(config.ts.typings)),
@@ -54,7 +54,7 @@ gulp.task('typescript-watch', function () {
 /**
  * Remove all files from the build, temp, and reports folders
  */
-gulp.task('typescript-clean', function() {
+gulp.task('typescript-clean', function () {
     var delconfig = [].concat(config.ts.outFiles);
     return clean(delconfig);
 });
@@ -63,23 +63,23 @@ gulp.task('typescript-clean', function() {
  * Run specs once and exit
  * @return {Stream}
  */
-gulp.task('tests-run', function() {
-    startTests(true /*singleRun*/ );
+gulp.task('tests-run', function () {
+    startTests(true /*singleRun*/);
 });
 
 /**
  * Run specs and wait.
  * Watch for file changes and re-run tests on each change
  */
-gulp.task('tests-watch', function() {
-    startTests(false /*singleRun*/ );
+gulp.task('tests-watch', function () {
+    startTests(false /*singleRun*/);
 });
 
 /**
  * Inject all the spec files into the SpecRunner.html
  * @return {Stream}
  */
-gulp.task('specs:inject', function() {
+gulp.task('specs:inject', function () {
     log('injecting scripts into the spec runner');
 
     return gulp
@@ -93,7 +93,7 @@ gulp.task('specs:inject', function() {
  * Run the spec runner
  * @return {Stream}
  */
-gulp.task('tests-serve', ['specs:inject', 'typescript-watch'], function() {
+gulp.task('tests-serve', ['specs:inject', 'typescript-watch'], function () {
     log('run the spec runner');
     serve();
 });
@@ -105,7 +105,7 @@ gulp.task('tests-serve', ['specs:inject', 'typescript-watch'], function() {
  * Can pass in a string, object or array.
  */
 function log(msg) {
-    if (typeof(msg) === 'object') {
+    if (typeof (msg) === 'object') {
         for (var item in msg) {
             if (msg.hasOwnProperty(item)) {
                 $.util.log($.util.colors.blue(msg[item]));
@@ -131,9 +131,9 @@ function clean(path) {
  * @return {undefined}
  */
 function startTests(singleRun) {
-    
+
     var Server = require('karma').Server;
-    
+
     log('Karma started');
 
     var server = new Server({
@@ -145,8 +145,8 @@ function startTests(singleRun) {
     server.on('run_complete', function (browser, result) {
         log('Karma completed');
     });
-    
-    server.start();    
+
+    server.start();
 }
 
 /**
@@ -155,7 +155,7 @@ function startTests(singleRun) {
  * @param   {Array} order Glob array pattern
  * @returns {Stream} The ordered stream
  */
-function orderSrc (src, order) {
+function orderSrc(src, order) {
     return gulp
         .src(src)
         .pipe($.if(order, $.order(order)));
@@ -169,7 +169,7 @@ function orderSrc (src, order) {
  * @returns {Stream}   The stream
  */
 function inject(src, label, order) {
-    var options = {read: false, addRootSlash: false};
+    var options = { read: false, addRootSlash: false };
     if (label) {
         options.name = 'inject:' + label;
     }
@@ -197,14 +197,14 @@ function serve() {
     }
 
     return $.nodemon(nodeOptions)
-        .on('restart', function(ev) {
+        .on('restart', function (ev) {
             log('*** nodemon restarted');
             if (ev) {
                 log('files changed:\n' + ev);
             }
-            setTimeout(function() {
+            setTimeout(function () {
                 browserSync.notify('reloading now ...');
-                browserSync.reload({stream: false});
+                browserSync.reload({ stream: false });
             }, config.browserReloadDelay);
         })
         .on('start', function () {
@@ -220,7 +220,7 @@ function serve() {
 }
 
 function getNodeOptions() {
-    
+
     return {
         script: config.nodeServer,
         delay: 2000, // Setting too low causes multiple restarts on file changes
@@ -235,7 +235,7 @@ function runNodeInspector() {
 
     log('Running node-inspector.');
     log('Browse to http://localhost:8080/debug?port=5858');
-    
+
     var exec = require('child_process').exec;
     exec('node-inspector');
 }
@@ -268,7 +268,7 @@ function startBrowserSync() {
         notify: true,
         reloadDelay: config.browserReloadDelay,
         startPath: config.specRunnerFile
-    } ;
+    };
 
     browserSync(options);
 }

@@ -1,4 +1,4 @@
-module.exports = function() {
+module.exports = function () {
     
     // Local variables
     var root = './';
@@ -14,7 +14,7 @@ module.exports = function() {
     var typings = './typings/local/';
     var report = './report/';
     var specRunnerFile = 'SpecRunner.html';
-    
+
     var config = {
 
         // Root folder
@@ -94,7 +94,7 @@ module.exports = function() {
     
     // Karma settings
     config.karma = getKarmaOptions();
-    
+
     return config;
     
     ////////////////
@@ -103,14 +103,14 @@ module.exports = function() {
         var options = {
             files: [].concat(
                 jsSrc + '*.js'
-            ),
+                ),
             exclude: [],
             coverage: {
                 dir: report + 'coverage',
                 reporters: [
-                    {type: 'html', subdir: 'report-html'},
-                    {type: 'lcov', subdir: 'report-lcov'},
-                    {type: 'text-summary'}
+                    { type: 'html', subdir: 'report-html' },
+                    { type: 'lcov', subdir: 'report-lcov' },
+                    { type: 'text-summary' }
                 ]
             },
             preprocessors: []
