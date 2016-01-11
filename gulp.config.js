@@ -11,7 +11,7 @@ module.exports = function() {
     var jsSpecFiles = '**/*.spec.js';
     var tsSrcFiles = '**/*.ts';
     var tsDefFiles = '**/*.d.ts';
-    var typings = './tools/typings/';
+    var typings = './typings/local/';
     var report = './report/';
     var specRunnerFile = 'SpecRunner.html';
     
