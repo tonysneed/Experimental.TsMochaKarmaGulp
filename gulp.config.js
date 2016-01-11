@@ -83,12 +83,7 @@ module.exports = function () {
             ]
         },
 
-        // Node settings
-        nodeServer: root + 'server.js',
-        defaultPort: '7203',
-        
         // Browser sync
-        browserReloadPort: 3000,
         browserReloadDelay: 1000
     }
     
