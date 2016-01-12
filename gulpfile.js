@@ -1,3 +1,5 @@
+'use strict';
+
 var config = require('./gulp.config')();
 var del = require('del');
 var merge = require('merge2');
@@ -35,8 +37,10 @@ gulp.task('typescript-compile', function () {
     var tsResult = gulp.src(config.ts.files)
         .pipe($.sourcemaps.init())
         .pipe($.typescript({
-            noImplicitAny: true,
-            declaration: true
+            module: config.ts.compilerOptions.module,
+            target: config.ts.compilerOptions.target,
+            noImplicitAny: config.ts.compilerOptions.noImplicitAny,
+            declaration: config.ts.compilerOptions.declaration
         }));
         
     return stream.merge(

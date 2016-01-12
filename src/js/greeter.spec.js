@@ -1,8 +1,10 @@
-describe('App.Greeter', function () {
+'use strict';
 
-    describe('greet', function () {
+describe('App.Greeter', () => {
 
-        it('returns hello world', function () {
+    describe('greet', () => {
+
+        it('returns hello world', () => {
 
             // Arrange
             var greeter = new App.Greeter('World');

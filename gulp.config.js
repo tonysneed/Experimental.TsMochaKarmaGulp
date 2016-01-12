@@ -62,6 +62,14 @@ module.exports = function () {
         // TypeScript settings
         ts: {
             
+            // Compiler options
+            compilerOptions: {
+                module: 'commonjs',
+                target: 'es2015',
+                noImplicitAny: true,
+                declaration: true
+            },
+            
             // Folders
             src: tsSrc,
             out: jsSrc,

@@ -1,14 +1,13 @@
 var App;
 (function (App) {
-    var Greeter = (function () {
-        function Greeter(message) {
+    class Greeter {
+        constructor(message) {
             this.message = message;
         }
-        Greeter.prototype.greet = function () {
+        greet() {
             return 'Hello ' + this.message;
-        };
-        return Greeter;
-    })();
+        }
+    }
     App.Greeter = Greeter;
 })(App || (App = {}));
 
