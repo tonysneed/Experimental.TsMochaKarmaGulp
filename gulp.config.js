@@ -110,7 +110,8 @@ module.exports = function () {
     function getKarmaOptions() {
         var options = {
             files: [].concat(
-                jsSrc + '*.js'
+                // jsSrc + '*.js',
+                jsSrc + jsSrcFiles
                 ),
             exclude: [],
             coverage: {
@@ -122,8 +123,8 @@ module.exports = function () {
                 ]
             },
             preprocessors: {
-                [jsSrc + '**/*.js']: ['babel'],
                 [jsSrc + '**/!(*.spec)+(.js)']: ['coverage'],
+                [jsSrc + '**/*.js']: ['babel']
             },
             babelPreprocessor: {
                 options: {
