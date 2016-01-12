@@ -6,6 +6,7 @@ var merge = require('merge2');
 var stream = require('event-stream');
 var args = require('yargs').argv;
 var browserSync = require('browser-sync');
+var tslintStylish = require('tslint-stylish');
 var gulp = require('gulp');
 var $ = require('gulp-load-plugins')({ lazy: true });
 
@@ -22,6 +23,21 @@ var $ = require('gulp-load-plugins')({ lazy: true });
  */
 gulp.task('help', $.taskListing.withFilters(/:/));
 gulp.task('default', ['help']);
+
+/**
+ * vet typescript code and create coverage report
+ * @return {Stream}
+ */
+gulp.task('vet:typescript', function () {
+    return gulp
+        .src(config.ts.files)
+        .pipe($.tslint())
+        .pipe($.tslint.report(tslintStylish, {
+            emitError: false,
+            sort: true,
+            bell: false
+        }));
+});
 
 /**
  * Compile TypeScript
