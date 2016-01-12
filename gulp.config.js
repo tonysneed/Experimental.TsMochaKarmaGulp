@@ -91,8 +91,13 @@ module.exports = function () {
             ]
         },
 
-        // Browser sync
-        browserReloadDelay: 1000
+        // Browser sync setings
+        browserSync: {
+            port: 3000,
+            reloadDelay: 1000,
+            logLevel: 'info',
+            logPrefix: 'spec-runner',
+        }
     }
     
     // Karma settings
@@ -116,9 +121,23 @@ module.exports = function () {
                     { type: 'text-summary' }
                 ]
             },
-            preprocessors: []
+            preprocessors: {
+                [jsSrc + '**/*.js']: ['babel'],
+                [jsSrc + '**/!(*.spec)+(.js)']: ['coverage'],
+            },
+            babelPreprocessor: {
+                options: {
+                    presets: ['es2015'],
+                    sourceMap: 'inline'
+                },
+                filename: function (file) {
+                    return file.originalPath.replace(/\.js$/, '.es5.js');
+                },
+                sourceFileName: function (file) {
+                    return file.originalPath;
+                }
+            },
         };
-        options.preprocessors[jsSrc + '**/!(*.spec)+(.js)'] = ['coverage'];
         return options;
     }
 };

@@ -28,6 +28,7 @@ module.exports = function (config) {
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
         preprocessors: gulpConfig.karma.preprocessors,
 
+        babelPreprocessor: gulpConfig.karma.babelPreprocessor,
 
         // test results reporter to use
         // possible values: 'dots', 'progress'

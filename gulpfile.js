@@ -71,7 +71,7 @@ gulp.task('tests-run', function () {
  * Run specs and wait.
  * Watch for file changes and re-run tests on each change
  */
-gulp.task('tests-watch', function () {
+gulp.task('tests-watch', ['typescript-watch'], function () {
     
     startTests(false /*singleRun*/);
 });
@@ -206,13 +206,14 @@ function serveSpecRunner() {
     log('Starting BrowserSync on port ' + config.browserSyncPort);
 
     var options = {
+        port: config.browserSync.port,
         server: config.root,
         files: config.js.srcSpecs,
         logFileChanges: true,
-        logLevel: 'info',
-        logPrefix: 'spec-runner',
+        logLevel: config.browserSync.logLevel,
+        logPrefix: config.browserSync.logPrefix,
         notify: true,
-        reloadDelay: config.browserReloadDelay,
+        reloadDelay: config.browserSync.reloadDelay,
         startPath: config.specRunnerFile
     };
     
