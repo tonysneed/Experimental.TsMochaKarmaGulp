@@ -7,6 +7,6 @@ var Greeter = (function () {
     };
     return Greeter;
 })();
-module.exports = Greeter;
+exports.Greeter = Greeter;
 
 //# sourceMappingURL=greeter.js.map

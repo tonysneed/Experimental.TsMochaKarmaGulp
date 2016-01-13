@@ -1,21 +1,12 @@
-'use strict';
-
-import * as Greeter from 'greeter';
-
-describe('App.Greeter', () => {
-
-    describe('greet', () => {
-
-        it('returns hello world', () => {
-
-            // Arrange
-            var greeter = new Greeter('World');
-
-            // Act
+var greeter_1 = require("./greeter");
+describe("Greeter", function () {
+    describe("greet", function () {
+        it("returns Hello World", function () {
+            var greeter = new greeter_1.Greeter("World");
             var result = greeter.greet();
-
-            // Assert
-            expect(result).toEqual('Hello World');
+            expect(result).toEqual("Hello World");
         });
     });
 });
+
+//# sourceMappingURL=greeter.spec.js.map

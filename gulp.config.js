@@ -69,7 +69,9 @@ module.exports = function () {
                 module: 'commonjs',
                 target: 'es5',
                 noImplicitAny: true,
-                declaration: true
+                declaration: true,
+                moduleResolution: 'node',
+                removeComments: true
             },
             
             // Folders
@@ -139,7 +141,7 @@ module.exports = function () {
             },
         };
         options.preprocessors[jsSrc + '**/!(*.spec)+(.js)'] = ['coverage'];
-        options.preprocessors[jsSrc + '**/*.js'] = ['babel'];
+        //options.preprocessors[jsSrc + '**/*.js'] = ['babel'];
         return options;
     }
 };

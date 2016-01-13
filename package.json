@@ -49,6 +49,7 @@
     "karma-phantomjs-launcher": "^0.2.3",
     "merge2": "^0.3.6",
     "phantomjs": "^1.9.19",
+    "systemjs": "^0.19.15",
     "tslint": "^3.2.1",
     "tslint-stylish": "^2.1.0-beta",
     "yargs": "^3.31.0"

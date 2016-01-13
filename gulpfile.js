@@ -14,8 +14,8 @@ var $ = require('gulp-load-plugins')({ lazy: true });
  * yargs variables can be passed in to alter the behavior, when present.
  * Example: gulp typescript-compile
  *
- * --verbose  : Various tasks will produce more output to the console.
  * --clean    : Delete generated files
+ * --verbose  : Various tasks will produce more output to the console.
  */
 
 /**
@@ -75,7 +75,9 @@ gulp.task('typescript-compile', function () {
             module: config.ts.compilerOptions.module,
             target: config.ts.compilerOptions.target,
             noImplicitAny: config.ts.compilerOptions.noImplicitAny,
-            declaration: config.ts.compilerOptions.declaration
+            declaration: config.ts.compilerOptions.declaration,
+            moduleResolution: config.ts.compilerOptions.moduleResolution,
+            removeComments: config.ts.compilerOptions.removeComments
         }));
         
     return stream.merge(
@@ -97,7 +99,7 @@ gulp.task('typescript-watch', function () {
  * Run specs once and exit
  * @return {Stream}
  */
-gulp.task('tests-run', function () {
+gulp.task('tests-run', ['typescript-compile'], function () {
     
     startTests(true /*singleRun*/);
 });
