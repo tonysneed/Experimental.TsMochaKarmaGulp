@@ -9,34 +9,77 @@ module.exports = function (config) {
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '',
+        basePath: './',
+
+        plugins: [
+            'karma-systemjs',
+            'karma-phantomjs-launcher',
+            'karma-typescript-preprocessor',
+            'karma-jasmine',
+            'karma-coverage',
+        ],
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: ['jasmine'],
+        frameworks: ['systemjs', 'jasmine'],
 
-        // list of files / patterns to load in the browser
-        files: gulpConfig.karma.files,
+        files: [
+            'src/ts/*.spec.ts'
+        ],
 
         // list of files to exclude
         exclude: gulpConfig.karma.exclude,
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        preprocessors: gulpConfig.karma.preprocessors,
+        // preprocessors: gulpConfig.karma.preprocessors,
+
+        // typescriptPreprocessor: {
+        //     options: {
+        //         sourceMap: true,
+        //         target: 'ES5',
+        //         module: 'amd',
+        //         noResolve: false
+        //     },
+        //     transformPath: function (path) {
+        //         return path.replace(/\.ts$/, '.js');
+        //     }
+        // },
 
         //babelPreprocessor: gulpConfig.karma.babelPreprocessor,
+
+        systemjs: {
+            // configFile: 'system.config.js',
+            config: {
+                paths: {
+                    'typescript': 'node_modules/typescript/lib/typescript.js',
+                    'systemjs': 'node_modules/systemjs/dist/system.js',
+                    'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
+                    'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js',
+                    'phantomjs-polyfill': 'node_modules/phantomjs-polyfill/bind-polyfill.js'
+                },
+                packages: {
+                    'src/ts': {
+                        defaultExtension: 'ts'
+                    }
+                },
+                transpiler: 'typescript'
+            },
+            serveFiles: [
+                'src/ts/**/*.ts'
+            ]
+        },
 
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: ['progress', 'coverage'],
+        // reporters: ['progress', 'coverage'],
         
         // coverage reporter
-        coverageReporter: {
-            dir: gulpConfig.karma.coverage.dir,
-            reporters: gulpConfig.karma.coverage.reporters
-        },
+        // coverageReporter: {
+        //     dir: gulpConfig.karma.coverage.dir,
+        //     reporters: gulpConfig.karma.coverage.reporters
+        // },
 
         // web server port
         port: 9876,
