@@ -5,6 +5,7 @@ module.exports = function () {
     var src = './src/';
     var tsSrc = src + 'ts/';
     var jsSrc = src + 'js/';
+    var jsRoot = root + '*.js';
     var jsSrcFiles = '**/*.js';
     var jsModuleFiles = '**/*.module.js';
     var jsMapFiles = '**/*.js.map';
@@ -38,6 +39,7 @@ module.exports = function () {
         
         // JavaScript settings
         js: {
+            root: jsRoot,
             dir: jsSrc,
             src: [
                 jsSrc + jsSrcFiles,
@@ -65,7 +67,7 @@ module.exports = function () {
             // Compiler options
             compilerOptions: {
                 module: 'commonjs',
-                target: 'es2015',
+                target: 'es5',
                 noImplicitAny: true,
                 declaration: true
             },
@@ -98,7 +100,7 @@ module.exports = function () {
             logLevel: 'info',
             logPrefix: 'spec-runner',
         }
-    }
+    };
     
     // Karma settings
     config.karma = getKarmaOptions();
@@ -122,10 +124,7 @@ module.exports = function () {
                     { type: 'text-summary' }
                 ]
             },
-            preprocessors: {
-                [jsSrc + '**/!(*.spec)+(.js)']: ['coverage'],
-                [jsSrc + '**/*.js']: ['babel']
-            },
+            preprocessors: [],
             babelPreprocessor: {
                 options: {
                     presets: ['es2015'],
@@ -139,6 +138,8 @@ module.exports = function () {
                 }
             },
         };
+        options.preprocessors[jsSrc + '**/!(*.spec)+(.js)'] = ['coverage'];
+        options.preprocessors[jsSrc + '**/*.js'] = ['babel'];
         return options;
     }
 };

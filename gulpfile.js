@@ -25,10 +25,29 @@ gulp.task('help', $.taskListing.withFilters(/:/));
 gulp.task('default', ['help']);
 
 /**
+ * vet es5 code and create coverage report
+ * @return {Stream}
+ */
+gulp.task('vet:es5', function() {
+
+    log('Analyzing ES5 code with JSHint and JSCS');
+
+    return gulp
+        .src(config.js.root)
+        .pipe($.if(args.verbose, $.print()))
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
+        .pipe($.jshint.reporter('fail'));
+});
+
+/**
  * vet typescript code and create coverage report
  * @return {Stream}
  */
 gulp.task('vet:typescript', function () {
+
+    log('Analyzing typescript code with TSLint');
+
     return gulp
         .src(config.ts.files)
         .pipe($.tslint())
@@ -46,9 +65,9 @@ gulp.task('typescript-compile', function () {
     
     if (args.clean) {
         cleanTypeScript();
-    };
+    }
 
-    log('Compiling TypeScript')
+    log('Compiling TypeScript');
     
     var tsResult = gulp.src(config.ts.files)
         .pipe($.sourcemaps.init())

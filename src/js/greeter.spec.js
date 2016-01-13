@@ -1,5 +1,7 @@
 'use strict';
 
+import * as Greeter from 'greeter';
+
 describe('App.Greeter', () => {
 
     describe('greet', () => {
@@ -7,7 +9,7 @@ describe('App.Greeter', () => {
         it('returns hello world', () => {
 
             // Arrange
-            var greeter = new App.Greeter('World');
+            var greeter = new Greeter('World');
 
             // Act
             var result = greeter.greet();

@@ -1,14 +1,12 @@
-var App;
-(function (App) {
-    class Greeter {
-        constructor(message) {
-            this.message = message;
-        }
-        greet() {
-            return 'Hello ' + this.message;
-        }
+var Greeter = (function () {
+    function Greeter(message) {
+        this.message = message;
     }
-    App.Greeter = Greeter;
-})(App || (App = {}));
+    Greeter.prototype.greet = function () {
+        return "Hello " + this.message;
+    };
+    return Greeter;
+})();
+module.exports = Greeter;
 
 //# sourceMappingURL=greeter.js.map
