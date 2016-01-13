@@ -11,7 +11,7 @@
     <script src="lib/jasmine-2.4.1/jasmine.js"></script>
     <script src="lib/jasmine-2.4.1/jasmine-html.js"></script>
     <script src="lib/jasmine-2.4.1/boot.js"></script>
-    <script src="node_modules/systemjs/dist/system.src.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
 
     <script>
         // Configure systemjs to use the .js extension for imports from the src/js folder
@@ -21,13 +21,21 @@
             }
         });
         
-        // Import spec files
+        // Import spec files: Does NOT work
+        // System.paths['specs'] = 'src/js/*.spec';
+        // Promise.all([
+        //     System.import('specs')
+        // ])
+
+        // Import spec files: Does work
         // System.paths['specs'] = 'src/js/greeter.spec';
-        // System.paths['specs'] = 'src/js/*.spec'; // won't work
+        // Promise.all([
+        //     System.import('specs'),
+        // ])
+
+        // Import spec files: Does work
         Promise.all([
             System.import('src/js/greeter.spec'),
-            // System.import('specs'), // won't work
-            // System.import('./src/js') // won't work
         ])
     </script>
 
