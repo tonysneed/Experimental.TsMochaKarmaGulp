@@ -46,10 +46,7 @@ module.exports = function (config) {
         //     }
         // },
 
-        //babelPreprocessor: gulpConfig.karma.babelPreprocessor,
-
         systemjs: {
-            // configFile: 'system.config.js',
             config: {
                 paths: {
                     'typescript': 'node_modules/typescript/lib/typescript.js',

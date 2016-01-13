@@ -127,23 +127,9 @@ module.exports = function () {
                 ]
             },
             preprocessors: [],
-            // babelPreprocessor: {
-            //     options: {
-            //         presets: ['es2015'],
-            //         sourceMap: 'inline'
-            //     },
-            //     filename: function (file) {
-            //         return file.originalPath.replace(/\.js$/, '.es5.js');
-            //     },
-            //     sourceFileName: function (file) {
-            //         return file.originalPath;
-            //     }
-            // },
         };
         options.preprocessors[tsSrc + '**/!(*.spec)+(.ts)'] = ['typescript', 'coverage'];
         options.preprocessors[tsSrc + '**/*.ts'] = ['typescript'];
-        // options.preprocessors[jsSrc + '**/!(*.spec)+(.js)'] = ['coverage'];
-        //options.preprocessors[jsSrc + '**/*.js'] = ['babel'];
         return options;
     }
 };
