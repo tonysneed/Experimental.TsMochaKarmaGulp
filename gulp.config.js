@@ -2,6 +2,7 @@ module.exports = function () {
     
     // Local variables
     var root = './';
+    var util = root + 'util/';
     var src = './src/';
     var tsSrc = src + 'ts/';
     var jsSrc = src + 'js/';
@@ -95,12 +96,18 @@ module.exports = function () {
             ]
         },
 
-        // Browser sync setings
+        // Browser sync settings
         browserSync: {
             port: 3000,
             reloadDelay: 1000,
             logLevel: 'info',
             logPrefix: 'spec-runner',
+        },
+        
+        // Inject imports settings
+        imports: {
+            template: util + 'system.template.js',
+            script: util + 'system.imports.js'
         }
     };
     

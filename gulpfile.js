@@ -2,6 +2,8 @@
 
 var config = require('./gulp.config')();
 var del = require('del');
+var glob = require('glob');
+var path = require('path');
 var merge = require('merge2');
 var stream = require('event-stream');
 var args = require('yargs').argv;
@@ -25,45 +27,17 @@ gulp.task('help', $.taskListing.withFilters(/:/));
 gulp.task('default', ['help']);
 
 /**
- * vet es5 code and create coverage report
- * --verbose
+ * Vet both ES5 and TypeScript
  * @return {Stream}
  */
-gulp.task('vet:es5', function() {
-
-    log('Analyzing ES5 code with JSHint and JSCS');
-
-    return gulp
-        .src(config.js.root)
-        .pipe($.if(args.verbose, $.print()))
-        .pipe($.jshint())
-        .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
-        .pipe($.jshint.reporter('fail'));
-});
-
-/**
- * vet typescript code and create coverage report
- * @return {Stream}
- */
-gulp.task('vet:typescript', function () {
-
-    log('Analyzing typescript code with TSLint');
-
-    return gulp
-        .src(config.ts.files)
-        .pipe($.tslint())
-        .pipe($.tslint.report(tslintStylish, {
-            emitError: false,
-            sort: true,
-            bell: false
-        }));
+gulp.task('scripts-vet', ['vet:es5', 'vet:typescript'], function () {
 });
 
 /**
  * Compile TypeScript
  * --clean
  */
-gulp.task('typescript-compile', function () {
+gulp.task('typescript-compile', ['vet:typescript'], function () {
     
     if (args.clean) {
         cleanTypeScript();
@@ -116,6 +90,52 @@ gulp.task('tests-watch', ['typescript-watch'], function () {
 });
 
 /**
+ * Run the spec runner
+ * @return {Stream}
+ */
+gulp.task('tests-serve', ['specs:inject', 'imports:inject','typescript-watch'], function () {
+    
+    log('Running the spec runner');
+    
+    serveSpecRunner();
+});
+
+/**
+ * vet es5 code and create coverage report
+ * --verbose
+ * @return {Stream}
+ */
+gulp.task('vet:es5', function() {
+
+    log('Analyzing ES5 code with JSHint');
+
+    return gulp
+        .src(config.js.root)
+        .pipe($.if(args.verbose, $.print()))
+        .pipe($.jshint())
+        .pipe($.jshint.reporter('jshint-stylish', {verbose: true}))
+        .pipe($.jshint.reporter('fail'));
+});
+
+/**
+ * vet typescript code and create coverage report
+ * @return {Stream}
+ */
+gulp.task('vet:typescript', function () {
+
+    log('Analyzing typescript code with TSLint');
+
+    return gulp
+        .src(config.ts.files)
+        .pipe($.tslint())
+        .pipe($.tslint.report(tslintStylish, {
+            emitError: false,
+            sort: true,
+            bell: false
+        }));
+});
+
+/**
  * Inject all the spec files into the SpecRunner.html
  * @return {Stream}
  */
@@ -131,13 +151,17 @@ gulp.task('specs:inject', function () {
 });
 
 /**
- * Run the spec runner
+ * Inject imports into system.js
  * @return {Stream}
  */
-gulp.task('tests-serve', ['specs:inject', 'typescript-watch'], function () {
+gulp.task('imports:inject', function(){
     
-    log('run the spec runner');
-    serveSpecRunner();
+    log('Injecting imports into system.js');
+
+    gulp.src(config.imports.template)
+        .pipe(injectString(config.js.specs, config.js.dir,'import'))
+        .pipe($.rename(config.imports.script))
+        .pipe(gulp.dest(config.root));
 });
 
 ////////////////
@@ -231,6 +255,32 @@ function inject(src, label, order) {
         options.name = 'inject:' + label;
     }
     return $.inject(orderSrc(src, order), options);
+}
+
+/**
+ * Inject files as strings at a specified inject label
+ * @param   {Array} src   glob pattern for source files
+ * @param   {String} dir   directory for spec files
+ * @param   {String} label   The label name
+ * @returns {Stream}   The stream
+ */
+function injectString(src, dir, label) {
+    
+    var search = '/// inject:' + label;
+    var first = '\n    System.import(\'';
+    var last = '\'),';
+    var specNames = [];
+
+    src.forEach(function(pattern) {
+        glob.sync(pattern)
+            .forEach(function(file) {
+                var fileName = path.basename(file, path.extname(file));
+                var specName = dir + fileName;
+                specNames.push(first + specName + last);
+            });
+    });
+
+    return $.injectString.after(search, specNames);
 }
 
 /**

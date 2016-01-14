@@ -75,8 +75,8 @@
 			"program": "node_modules/gulp/bin/gulp.js",
 			"stopOnEntry": false,
 			"args": [
-                // Name of gulp task to run
-                "vet:es5"
+                // Replace 'default' with name of gulp task to run
+                "default"
             ],
 			"cwd": "."
 		}
