@@ -1,0 +1,84 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "Run JavaScript File",
+			"type": "node",
+			"request": "launch",
+            // File currently being viewed
+			"program": "${file}",
+			"stopOnEntry": true,
+			"args": [],
+			"cwd": "."
+		},
+		{
+            // ERROR: Source is not available.
+			"name": "Run TypeScript File",
+			"type": "node",
+			"request": "launch",
+            // File currently being viewed
+			"program": "${file}",
+			"stopOnEntry": true,
+			"args": [],
+			"cwd": ".",
+			"sourceMaps": true,
+			"outDir": "src/js"
+		},
+		{
+			"name": "Run JavaScript Tests",
+			"type": "node",
+			"request": "launch",
+			"program": "node_modules/jasmine-node/bin/jasmine-node",
+			"stopOnEntry": false,
+			"args": [
+				"--verbose",
+                "src/js"
+            ],
+			"cwd": ".",
+			"sourceMaps": false,
+			"outDir": null
+		},
+		{
+			"name": "Run JavaScript Test",
+			"type": "node",
+			"request": "launch",
+			"program": "node_modules/jasmine-node/bin/jasmine-node",
+			"stopOnEntry": false,
+			"args": [
+				"--verbose",
+                // File currently being viewed
+                "${file}"
+            ],
+			"cwd": ".",
+			"sourceMaps": false,
+			"outDir": null
+		},
+		{
+            // ERROR: Source is not available.
+			"name": "Run TypeScript Tests",
+			"type": "node",
+			"request": "launch",
+			"program": "node_modules/jasmine-node/bin/jasmine-node",
+			"stopOnEntry": false,
+			"args": [
+				"--verbose",
+                "src/js"
+            ],
+			"cwd": ".",
+			"sourceMaps": true,
+			"outDir": "src/js"
+		},
+		{
+			"name": "Run Gulp Task",
+			"type": "node",
+			"request": "launch",
+			"program": "node_modules/gulp/bin/gulp.js",
+			"stopOnEntry": false,
+			"args": [
+                // Name of gulp task to run
+                "vet:es5"
+            ],
+			"cwd": "."
+		}
+	]
+}

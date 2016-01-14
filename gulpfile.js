@@ -14,7 +14,7 @@ var $ = require('gulp-load-plugins')({ lazy: true });
  * yargs variables can be passed in to alter the behavior, when present.
  * Example: gulp typescript-compile
  *
- * --clean    : Delete generated files
+ * --clean    : Delete generated files.
  * --verbose  : Various tasks will produce more output to the console.
  */
 
@@ -26,6 +26,7 @@ gulp.task('default', ['help']);
 
 /**
  * vet es5 code and create coverage report
+ * --verbose
  * @return {Stream}
  */
 gulp.task('vet:es5', function() {
@@ -60,6 +61,7 @@ gulp.task('vet:typescript', function () {
 
 /**
  * Compile TypeScript
+ * --clean
  */
 gulp.task('typescript-compile', function () {
     
@@ -119,7 +121,7 @@ gulp.task('tests-watch', ['typescript-watch'], function () {
  */
 gulp.task('specs:inject', function () {
     
-    log('injecting scripts into the spec runner');
+    log('Injecting scripts into the spec runner');
 
     return gulp
         .src(config.specRunner)
@@ -233,6 +235,7 @@ function inject(src, label, order) {
 
 /**
  * Start BrowserSync
+ * --verbose
  */
 function serveSpecRunner() {
     
