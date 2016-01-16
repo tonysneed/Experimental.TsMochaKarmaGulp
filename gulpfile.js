@@ -44,22 +44,19 @@ gulp.task('typescript-compile', ['vet:typescript'], function () {
     }
 
     log('Compiling TypeScript');
-    
+
+    var tsProject = $.typescript.createProject('tsconfig.json');
     var tsResult = gulp.src(config.ts.files)
         .pipe($.sourcemaps.init())
-        .pipe($.typescript({
-            module: config.ts.compilerOptions.module,
-            target: config.ts.compilerOptions.target,
-            noImplicitAny: config.ts.compilerOptions.noImplicitAny,
-            declaration: config.ts.compilerOptions.declaration,
-            moduleResolution: config.ts.compilerOptions.moduleResolution,
-            removeComments: config.ts.compilerOptions.removeComments
-        }));
-        
+        .pipe($.typescript(tsProject));
+
     return stream.merge(
         tsResult.dts.pipe(gulp.dest(config.ts.typings)),
         tsResult.js
-            .pipe($.sourcemaps.write('.'))
+            .pipe($.sourcemaps.write('.', {
+                includeContent: false,
+                sourceRoot: '../ts/'
+            }))
             .pipe(gulp.dest(config.ts.out)));
 });
 
