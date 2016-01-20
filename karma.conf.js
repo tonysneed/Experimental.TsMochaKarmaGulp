@@ -30,32 +30,9 @@ module.exports = function (config) {
 
         // preprocess matching files before serving them to the browser
         // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
-        // preprocessors: gulpConfig.karma.preprocessors,
-
-        // typescriptPreprocessor: {
-        //     options: {
-        //         sourceMap: true,
-        //         target: 'ES5',
-        //         module: 'amd',
-        //         noResolve: false
-        //     },
-        //     transformPath: function (path) {
-        //         return path.replace(/\.ts$/, '.js');
-        //     }
-        // },
+        preprocessors: gulpConfig.karma.preprocessors,
 
         systemjs: gulpConfig.karma.systemjs,
-
-        // test results reporter to use
-        // possible values: 'dots', 'progress'
-        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        // reporters: ['progress', 'coverage'],
-        
-        // coverage reporter
-        // coverageReporter: {
-        //     dir: gulpConfig.karma.coverage.dir,
-        //     reporters: gulpConfig.karma.coverage.reporters
-        // },
 
         // web server port
         port: 9876,

@@ -155,9 +155,6 @@ module.exports = function () {
             preprocessors: [],
         };
         
-        options.preprocessors[tsSrc + '**/!(*.spec)+(.ts)'] = ['typescript', 'coverage'];
-        options.preprocessors[tsSrc + '**/*.ts'] = ['typescript'];
-        
         return options;
     }
 };
