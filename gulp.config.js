@@ -121,8 +121,7 @@ module.exports = function () {
     function getKarmaOptions() {
         var options = {
             files: [].concat(
-                // jsSrc + '*.js',
-                jsSrc + jsSrcFiles
+                'src/ts/*.spec.ts'
                 ),
             exclude: [],
             coverage: {
@@ -133,10 +132,32 @@ module.exports = function () {
                     { type: 'text-summary' }
                 ]
             },
+            systemjs: {
+                config: {
+                    paths: {
+                        'typescript': 'node_modules/typescript/lib/typescript.js',
+                        'systemjs': 'node_modules/systemjs/dist/system.js',
+                        'system-polyfills': 'node_modules/systemjs/dist/system-polyfills.js',
+                        'es6-module-loader': 'node_modules/es6-module-loader/dist/es6-module-loader.js',
+                        'phantomjs-polyfill': 'node_modules/phantomjs-polyfill/bind-polyfill.js'
+                    },
+                    packages: {
+                        'src/ts': {
+                            defaultExtension: 'ts'
+                        }
+                    },
+                    transpiler: 'typescript'
+                },
+                serveFiles: [
+                    'src/ts/**/*.ts'
+                ]
+            },
             preprocessors: [],
         };
+        
         options.preprocessors[tsSrc + '**/!(*.spec)+(.ts)'] = ['typescript', 'coverage'];
         options.preprocessors[tsSrc + '**/*.ts'] = ['typescript'];
+        
         return options;
     }
 };
