@@ -4,9 +4,8 @@ var config = require('./gulp.config')();
 var del = require('del');
 var glob = require('glob');
 var path = require('path');
-var merge = require('merge2');
-var stream = require('event-stream');
 var args = require('yargs').argv;
+var exec = require('child_process').exec;
 var browserSync = require('browser-sync');
 var tslintStylish = require('tslint-stylish');
 var gulp = require('gulp');
@@ -38,21 +37,7 @@ gulp.task('scripts-vet', ['vet:es5', 'vet:typescript'], function () {
 gulp.task('typescript-compile', ['vet:typescript', 'clean:generated'], function () {
     
     log('Compiling TypeScript');
-
-    var tsProject = $.typescript.createProject('tsconfig.json');
-    var tsResult = gulp.src(config.ts.files)
-        .pipe($.sourcemaps.init())
-        .pipe($.typescript(tsProject));
-
-    return stream.merge(
-        tsResult.dts.pipe(gulp.dest(config.ts.typings)),
-        tsResult.js
-            .pipe($.sourcemaps.write('.', {
-                includeContent: false,
-                // NOTE: This assumes ts files are in subdirectories under src
-                sourceRoot: '../../src/'
-            }))
-            .pipe(gulp.dest(config.ts.out)));
+    exec('node_modules/typescript/bin/tsc -p src');
 });
 
 /**

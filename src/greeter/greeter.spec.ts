@@ -1,5 +1,3 @@
-/// <reference path="../../typings/jasmine/jasmine.d.ts" />
-
 import {Greeter} from "./greeter";
 
 describe("Greeter", () => {
