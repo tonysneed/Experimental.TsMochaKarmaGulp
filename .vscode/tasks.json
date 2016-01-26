@@ -13,9 +13,9 @@
             "problemMatcher": "$gulp-tsc"
         },
         {
-            "taskName": "tests-run",
+            "taskName": "tests-serve",
             "isTestCommand": true,
             "showOutput": "always"
-        }        
+        }
     ]
 }

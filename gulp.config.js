@@ -4,8 +4,8 @@ module.exports = function () {
     var root = './';
     var util = root + 'util/';
     var src = './src/';
-    var tsSrc = src + 'ts/';
-    var jsSrc = src + 'js/';
+    var tsSrc = src;
+    var jsSrc = root + 'dist/';
     var jsRoot = root + '*.js';
     var jsSrcFiles = '**/*.js';
     var jsModuleFiles = '**/*.module.js';
@@ -64,17 +64,6 @@ module.exports = function () {
         
         // TypeScript settings
         ts: {
-            
-            // Compiler options
-            compilerOptions: {
-                module: 'commonjs',
-                target: 'es5',
-                noImplicitAny: true,
-                declaration: true,
-                moduleResolution: 'node',
-                removeComments: true
-            },
-            
             // Folders
             src: tsSrc,
             out: jsSrc,
@@ -121,7 +110,7 @@ module.exports = function () {
     function getKarmaOptions() {
         var options = {
             files: [].concat(
-                'src/ts/*.spec.ts'
+                'src/**/*.spec.ts'
                 ),
             exclude: [],
             systemjs: {
@@ -134,14 +123,14 @@ module.exports = function () {
                         'phantomjs-polyfill': 'node_modules/phantomjs-polyfill/bind-polyfill.js'
                     },
                     packages: {
-                        'src/ts': {
+                        'src': {
                             defaultExtension: 'ts'
                         }
                     },
                     transpiler: 'typescript'
                 },
                 serveFiles: [
-                    'src/ts/**/*.ts'
+                    'src/**/*.ts'
                 ]
             },
             preprocessors: [],

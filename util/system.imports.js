@@ -3,11 +3,11 @@
 // Configure systemjs to use the .js extension for imports from the src/js folder
 System.config({
     packages: {
-        'src/js': {defaultExtension: 'js'}
+        'dist': {defaultExtension: 'js'}
     }
 });
 
 Promise.all([
     /// inject:import
-    System.import('./src/js/greeter.spec'),
+    System.import('dist/greeter/greeter.spec'),
 ]);

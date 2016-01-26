@@ -21,7 +21,7 @@
 			"args": [],
 			"cwd": ".",
 			"sourceMaps": true,
-			"outDir": "src/js"
+			"outDir": "dist"
 		},
 		{
 			"name": "Debug TypeScript Tests",
@@ -30,12 +30,12 @@
 			"program": "node_modules/jasmine-node/bin/jasmine-node",
 			"stopOnEntry": false,
 			"args": [
-                "src/js",
+                "dist",
 				"--verbose"
             ],
 			"cwd": ".",
 			"sourceMaps": true,
-			"outDir": "src/js"
+			"outDir": "dist"
 		},
 		{
 			"name": "Debug Current TypeScript Test",
@@ -48,11 +48,11 @@
                 "${file}",
 				"--verbose",
                 "--test-dir",
-                "src/js"
+                "dist"
             ],
 			"cwd": ".",
 			"sourceMaps": true,
-			"outDir": "src/js"
+			"outDir": "dist"
 		},
 		{
 			"name": "Debug Gulp Task",
