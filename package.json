@@ -24,6 +24,7 @@
     "browser-sync": "^2.11.0",
     "del": "^2.2.0",
     "es6-module-loader": "^0.17.10",
+    "event-stream": "^3.3.2",
     "express": "^4.13.3",
     "glob": "^6.0.4",
     "gulp": "^3.9.0",
