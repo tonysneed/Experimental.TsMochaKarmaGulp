@@ -98,7 +98,7 @@ gulp.task('tests-serve', ['specs:inject', 'imports:inject','typescript-watch'], 
 });
 
 /**
- * vet es5 code and create coverage report
+ * vet es5 code
  * --verbose
  * @return {Stream}
  */
@@ -115,7 +115,7 @@ gulp.task('vet:es5', function() {
 });
 
 /**
- * vet typescript code and create coverage report
+ * vet typescript code
  * @return {Stream}
  */
 gulp.task('vet:typescript', function () {

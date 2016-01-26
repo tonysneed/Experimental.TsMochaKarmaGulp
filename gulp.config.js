@@ -124,14 +124,6 @@ module.exports = function () {
                 'src/ts/*.spec.ts'
                 ),
             exclude: [],
-            coverage: {
-                dir: report + 'coverage',
-                reporters: [
-                    { type: 'html', subdir: 'report-html' },
-                    { type: 'lcov', subdir: 'report-lcov' },
-                    { type: 'text-summary' }
-                ]
-            },
             systemjs: {
                 config: {
                     paths: {

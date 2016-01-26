@@ -16,7 +16,6 @@ module.exports = function (config) {
             'karma-phantomjs-launcher',
             'karma-typescript-preprocessor',
             'karma-jasmine',
-            'karma-coverage',
         ],
 
         // frameworks to use
